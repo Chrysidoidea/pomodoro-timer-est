@@ -44,10 +44,29 @@ struct ContentView: View {
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
+                        ))
+                
+                Text(formatTime(timeRemaining))
+                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                    .monospacedDigit()
+                    .padding(.horizontal, 13)
+                    .foregroundStyle(
+                        mode == .focus
+                        ? LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        : LinearGradient(
+                            colors: [.green, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
                         )
                     )
+                    .scaleEffect(isTimerRunning ? 1.1 : 1.0)
+                    .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
             }
-            
+
         }
     }
 }
