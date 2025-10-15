@@ -127,6 +127,34 @@ struct ContentView: View {
                         )
                     }
                 }
+                HStack(spacing: 6) {
+                    Text("Rest Time: \(restDuration / 60) min")
+                        .font(.headline)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    ForEach([-1,-5,1,5], id: \.self) { step in
+                        Button("\(step)") {
+                            restDuration += step * 60
+                        }
+                        .disabled(isTimerRunning)
+                        .buttonStyle(.glass)
+                        .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
+                        .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    }
+                }
+
             }
         }
     }
