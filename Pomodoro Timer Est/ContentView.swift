@@ -5,10 +5,8 @@
 //  Created by Arthur Korolev on 10/15/25.
 //
 
-import SwiftUI
 import AVFoundation
-
-
+import SwiftUI
 
 struct ContentView: View {
     private enum Mode {
@@ -19,52 +17,55 @@ struct ContentView: View {
     @State private var isTimerRunning = false
     @State private var timer: Timer? = nil
     @AppStorage("focusDuration") private var focusDuration: Int = 1500
-    @AppStorage("restDuration")  private var restDuration: Int  = 300
+    @AppStorage("restDuration") private var restDuration: Int = 300
     @AppStorage("focusDuration") private var timeRemaining: Int = 1500
-    
-    
-    
+
     var body: some View {
         ZStack {
             LinearGradient(
                 colors: [
-                    Color(red: 55/255, green: 0/255, blue: 110/255),
-                    Color(red: 85/255, green: 0/255, blue: 155/255)
+                    Color(red: 55 / 255, green: 0 / 255, blue: 110 / 255),
+                    Color(red: 85 / 255, green: 0 / 255, blue: 155 / 255),
                 ],
                 startPoint: .top,
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-            
+
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
                     .font(.title)
                     .foregroundStyle(
                         LinearGradient(
                             colors: [
-                                Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0),
-                                .blue
+                                Color(
+                                    red: 255.0 / 255.0,
+                                    green: 63.0 / 255.0,
+                                    blue: 127.0 / 255.0
+                                ),
+                                .blue,
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
-                        ))
-                
+                        )
+                    )
+
                 Text(formatTime(timeRemaining))
                     .font(.system(size: 48, weight: .bold, design: .monospaced))
                     .monospacedDigit()
                     .padding(.horizontal, 13)
                     .foregroundStyle(
                         mode == .focus
-                        ? LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        : LinearGradient(
-                            colors: [.green, .cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
+                            ? LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                            : LinearGradient(
+                                colors: [.green, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
                     )
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
@@ -80,14 +81,25 @@ struct ContentView: View {
                     }
                     .disabled(isTimerRunning)
                     .buttonStyle(.glass)
-                    .foregroundStyle(LinearGradient(
-                        colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [
+                                Color(
+                                    red: 255.0 / 255.0,
+                                    green: 63.0 / 255.0,
+                                    blue: 127.0 / 255.0
+                                ), .blue,
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
                     .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
-                    
+                    .animation(
+                        .spring(response: 0.4, dampingFraction: 0.5),
+                        value: isTimerRunning
+                    )
+
                     Button(isTimerRunning ? "Pause" : "Begin") {
                         if isTimerRunning {
                             pauseTimer()
@@ -97,21 +109,37 @@ struct ContentView: View {
                     }
                     .buttonStyle(.glass)
                     .scaleEffect(isTimerRunning ? 1.15 : 1.0)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                    .animation(
+                        .spring(response: 0.4, dampingFraction: 0.5),
+                        value: isTimerRunning
+                    )
                     .shadow(radius: isTimerRunning ? 10 : 3)
-                    .foregroundStyle(Color(red: 255.0/63.0, green: 6.0/127.0, blue: 147.0/255.0))
+                    .foregroundStyle(
+                        LinearGradient(
+                                colors: [.green, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                    )
                     .padding(5)
                 }
-                HStack(spacing: 6) {
+                VStack(spacing: 6) {
                     Text("Focus Time: \(focusDuration / 60) min")
                         .font(.headline)
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                colors: [
+                                    Color(
+                                        red: 255.0 / 255.0,
+                                        green: 63.0 / 255.0,
+                                        blue: 127.0 / 255.0
+                                    ), .blue,
+                                ],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
+                    HStack(spacing: 8) {
                     ForEach([-5, -1, +1, +5], id: \.self) { step in
                         Button("\(step)") {
                             focusDuration += step * 60
@@ -119,41 +147,67 @@ struct ContentView: View {
                         .disabled(isTimerRunning)
                         .buttonStyle(.glass)
                         .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                        .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                        .animation(
+                            .spring(response: 0.4, dampingFraction: 0.5),
+                            value: isTimerRunning
+                        )
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                colors: [
+                                    Color(
+                                        red: 255.0 / 255.0,
+                                        green: 63.0 / 255.0,
+                                        blue: 127.0 / 255.0
+                                    ), .blue,
+                                ],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
-                    }
+                    }}
                 }
-                HStack(spacing: 6) {
+                VStack(spacing: 6) {
                     Text("Rest Time: \(restDuration / 60) min")
                         .font(.headline)
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                colors: [
+                                    Color(
+                                        red: 255.0 / 255.0,
+                                        green: 63.0 / 255.0,
+                                        blue: 127.0 / 255.0
+                                    ), .blue,
+                                ],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
-                    ForEach([-1,-5,1,5], id: \.self) { step in
-                        Button("\(step)") {
-                            restDuration += step * 60
+                    HStack(spacing: 8) {
+                        ForEach([-1, -5, 1, 5], id: \.self) { step in
+                            Button("\(step)") {
+                                restDuration += step * 60
+                            }
+                            .disabled(isTimerRunning)
+                            .buttonStyle(.glass)
+                            .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
+                            .animation(
+                                .spring(response: 0.4, dampingFraction: 0.5),
+                                value: isTimerRunning
+                            )
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [
+                                        Color(
+                                            red: 255.0 / 255.0,
+                                            green: 63.0 / 255.0,
+                                            blue: 127.0 / 255.0
+                                        ), .blue,
+                                    ],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
                         }
-                        .disabled(isTimerRunning)
-                        .buttonStyle(.glass)
-                        .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                        .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
                     }
                 }
 
@@ -163,10 +217,11 @@ struct ContentView: View {
     private func startTimer() {
         guard !isTimerRunning else { return }
         isTimerRunning = true
-        
+
         timer?.invalidate()
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
+            _ in
             if timeRemaining > 0 {
                 timeRemaining -= 1
             } else {
@@ -183,7 +238,7 @@ struct ContentView: View {
                 timer = nil
             }
         }
-        
+
         RunLoop.current.add(timer!, forMode: .common)
     }
     private func pauseTimer() {
@@ -195,14 +250,16 @@ struct ContentView: View {
 var player: AVAudioPlayer?
 
 func playSound() {
-    guard let path = Bundle.main.path(forResource: "alarm", ofType:"wav") else {
-        return }
+    guard let path = Bundle.main.path(forResource: "alarm", ofType: "wav")
+    else {
+        return
+    }
     let url = URL(fileURLWithPath: path)
-    
+
     do {
         player = try AVAudioPlayer(contentsOf: url)
         player?.play()
-        
+
     } catch let error {
         print(error.localizedDescription)
     }
