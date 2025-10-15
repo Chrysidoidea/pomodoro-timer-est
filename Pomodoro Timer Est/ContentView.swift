@@ -32,6 +32,7 @@ struct ContentView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
+            .frame(minWidth: 280, minHeight: 380)
 
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
