@@ -16,6 +16,9 @@ struct ContentView: View {
         case rest
     }
     @State private var mode: Mode = .focus
+    @State private var isTimerRunning = false
+    @AppStorage("focusDuration") private var timeRemaining: Int = 1500
+
 
 
     var body: some View {
@@ -44,10 +47,15 @@ struct ContentView: View {
                         )
                     )
             }
+            
         }
     }
 }
-
+func formatTime(_ seconds: Int) -> String {
+    let minutes = seconds / 60
+    let seconds = seconds % 60
+    return String(format: "%02d:%02d", minutes, seconds)
+}
 #Preview {
     ContentView()
 }
