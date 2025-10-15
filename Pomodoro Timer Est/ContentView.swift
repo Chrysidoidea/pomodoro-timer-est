@@ -250,7 +250,7 @@ struct ContentView: View {
 var player: AVAudioPlayer?
 
 func playSound() {
-    guard let path = Bundle.main.path(forResource: "alarm", ofType: "wav")
+    guard let path = Bundle.main.path(forResource: "alarm", ofType: "mp3")
     else {
         return
     }
