@@ -8,8 +8,9 @@
 import AVFoundation
 import SwiftUI
 
+@MainActor
 struct ContentView: View {
-    private enum Mode {
+    private enum Mode: Equatable {
         case focus
         case rest
     }
@@ -18,7 +19,7 @@ struct ContentView: View {
     @State private var timer: Timer? = nil
     @AppStorage("focusDuration") private var focusDuration: Int = 1500
     @AppStorage("restDuration") private var restDuration: Int = 300
-    @AppStorage("focusDuration") private var timeRemaining: Int = 1500
+    @AppStorage("timeRemaining") private var timeRemaining: Int = 1500
 
     var body: some View {
         ZStack {
@@ -143,6 +144,9 @@ struct ContentView: View {
                     ForEach([-5, -1, +1, +5], id: \.self) { step in
                         Button("\(step)") {
                             focusDuration += step * 60
+                            if mode == .focus {
+                                timeRemaining += step * 60
+                            }
                         }
                         .disabled(isTimerRunning)
                         .buttonStyle(.glass)
@@ -183,9 +187,12 @@ struct ContentView: View {
                             )
                         )
                     HStack(spacing: 8) {
-                        ForEach([-1, -5, 1, 5], id: \.self) { step in
+                        ForEach([-5, -1, 1, 5], id: \.self) { step in
                             Button("\(step)") {
                                 restDuration += step * 60
+                                if mode == .rest {
+                                    timeRemaining += step * 60
+                                }
                             }
                             .disabled(isTimerRunning)
                             .buttonStyle(.glass)
@@ -222,20 +229,22 @@ struct ContentView: View {
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
             _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                if mode == .focus {
-                    mode = .rest
-                    timeRemaining = restDuration
+            Task { @MainActor in
+                if timeRemaining > 0 {
+                    timeRemaining -= 1
                 } else {
-                    mode = .focus
-                    timeRemaining = focusDuration
+                    if mode == .focus {
+                        mode = .rest
+                        timeRemaining = restDuration
+                    } else {
+                        mode = .focus
+                        timeRemaining = focusDuration
+                    }
+                    isTimerRunning = false
+                    playSound()
+                    timer?.invalidate()
+                    timer = nil
                 }
-                isTimerRunning = false
-                playSound()
-                timer?.invalidate()
-                timer = nil
             }
         }
 
