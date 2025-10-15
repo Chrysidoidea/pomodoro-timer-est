@@ -21,9 +21,9 @@ struct ContentView: View {
     @AppStorage("focusDuration") private var focusDuration: Int = 1500
     @AppStorage("restDuration")  private var restDuration: Int  = 300
     @AppStorage("focusDuration") private var timeRemaining: Int = 1500
-
-
-
+    
+    
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -35,7 +35,7 @@ struct ContentView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-
+            
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
                     .font(.title)
@@ -68,12 +68,74 @@ struct ContentView: View {
                     )
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
-                HStack(spacing: 20) {}
+                HStack(spacing: 20) {
+                    Button("Set") {
+                        isTimerRunning = false
+                        timer?.invalidate()
+                        timer = nil
+                        mode = .focus
+                        timeRemaining = focusDuration
+                    }
+                    .disabled(isTimerRunning)
+                    .buttonStyle(.glass)
+                    .foregroundStyle(LinearGradient(
+                        colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ))
+                    .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                    
+                    Button(isTimerRunning ? "Pause" : "Begin") {
+                        if isTimerRunning {
+                            pauseTimer()
+                        } else {
+                            startTimer()
+                        }
+                    }
+                    .buttonStyle(.glass)
+                    .scaleEffect(isTimerRunning ? 1.15 : 1.0)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                    .shadow(radius: isTimerRunning ? 10 : 3)
+                    .foregroundStyle(Color(red: 255.0/63.0, green: 6.0/127.0, blue: 147.0/255.0))
+                    .padding(5)
                 }
             }
-
+        }
+    }
+    private func startTimer() {
+        guard !isTimerRunning else { return }
+        isTimerRunning = true
+        
+        timer?.invalidate()
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            } else {
+                if mode == .focus {
+                    mode = .rest
+                    timeRemaining = restDuration
+                } else {
+                    mode = .focus
+                    timeRemaining = focusDuration
+                }
+                isTimerRunning = false
+                timer?.invalidate()
+                timer = nil
+            }
+        }
+            
+        RunLoop.current.add(timer!, forMode: .common)
+    }
+    private func pauseTimer() {
+        isTimerRunning = false
+        timer?.invalidate()
+        timer = nil
     }
 }
+
+
 func formatTime(_ seconds: Int) -> String {
     let minutes = seconds / 60
     let seconds = seconds % 60
