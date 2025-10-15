@@ -16,6 +16,15 @@ struct ContentView: View {
                            endPoint: .bottom)
         .ignoresSafeArea()
         .ignoresSafeArea()
+            VStack(spacing: 14) {
+                Text("Pomodoro Timer Est")
+                    .font(.title)
+                    .foregroundStyle(LinearGradient(
+                        colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ))
+            }
         }
     }
 }
