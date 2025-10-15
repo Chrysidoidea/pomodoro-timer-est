@@ -100,6 +100,33 @@ struct ContentView: View {
                     .foregroundStyle(Color(red: 255.0/63.0, green: 6.0/127.0, blue: 147.0/255.0))
                     .padding(5)
                 }
+                HStack(spacing: 6) {
+                    Text("Focus Time: \(focusDuration / 60) min")
+                        .font(.headline)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    ForEach([1,5,10], id: \.self) { step in
+                        Button("+\(step)") {
+                            focusDuration += step * 60
+                        }
+                        .disabled(isTimerRunning)
+                        .buttonStyle(.glass)
+                        .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
+                        .animation(.spring(response: 0.4, dampingFraction: 0.5), value: isTimerRunning)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Color(red: 255.0/255.0, green: 63.0/255.0, blue: 127.0/255.0), .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    }
+                }
             }
         }
     }
@@ -125,7 +152,7 @@ struct ContentView: View {
                 timer = nil
             }
         }
-            
+        
         RunLoop.current.add(timer!, forMode: .common)
     }
     private func pauseTimer() {
