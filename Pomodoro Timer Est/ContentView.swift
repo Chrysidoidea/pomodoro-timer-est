@@ -178,6 +178,7 @@ struct ContentView: View {
                     timeRemaining = focusDuration
                 }
                 isTimerRunning = false
+                playSound()
                 timer?.invalidate()
                 timer = nil
             }
@@ -191,7 +192,21 @@ struct ContentView: View {
         timer = nil
     }
 }
+var player: AVAudioPlayer?
 
+func playSound() {
+    guard let path = Bundle.main.path(forResource: "alarm", ofType:"wav") else {
+        return }
+    let url = URL(fileURLWithPath: path)
+    
+    do {
+        player = try AVAudioPlayer(contentsOf: url)
+        player?.play()
+        
+    } catch let error {
+        print(error.localizedDescription)
+    }
+}
 
 func formatTime(_ seconds: Int) -> String {
     let minutes = seconds / 60
