@@ -69,12 +69,14 @@ struct ContentView: View {
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
                 HStack(spacing: 20) {
-                    Button("Set") {
+                    Button("Reset Defaults") {
                         isTimerRunning = false
                         timer?.invalidate()
                         timer = nil
                         mode = .focus
-                        timeRemaining = focusDuration
+                        timeRemaining = 1500
+                        focusDuration = 1500
+                        restDuration = 300
                     }
                     .disabled(isTimerRunning)
                     .buttonStyle(.glass)
