@@ -8,13 +8,15 @@
 import SwiftUI
 import AVFoundation
 
-private enum Mode {
-    case focus
-    case rest
-}
+
 
 struct ContentView: View {
+    private enum Mode {
+        case focus
+        case rest
+    }
     @State private var mode: Mode = .focus
+
 
     var body: some View {
         ZStack {
