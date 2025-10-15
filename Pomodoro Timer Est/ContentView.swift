@@ -110,8 +110,8 @@ struct ContentView: View {
                                 endPoint: .trailing
                             )
                         )
-                    ForEach([1,5,10], id: \.self) { step in
-                        Button("+\(step)") {
+                    ForEach([-5, -1, +1, +5], id: \.self) { step in
+                        Button("\(step)") {
                             focusDuration += step * 60
                         }
                         .disabled(isTimerRunning)
