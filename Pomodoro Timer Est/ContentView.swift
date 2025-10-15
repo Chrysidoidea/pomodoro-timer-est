@@ -17,6 +17,9 @@ struct ContentView: View {
     }
     @State private var mode: Mode = .focus
     @State private var isTimerRunning = false
+    @State private var timer: Timer? = nil
+    @AppStorage("focusDuration") private var focusDuration: Int = 1500
+    @AppStorage("restDuration")  private var restDuration: Int  = 300
     @AppStorage("focusDuration") private var timeRemaining: Int = 1500
 
 
@@ -65,9 +68,10 @@ struct ContentView: View {
                     )
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
+                HStack(spacing: 20) {}
+                }
             }
 
-        }
     }
 }
 func formatTime(_ seconds: Int) -> String {
