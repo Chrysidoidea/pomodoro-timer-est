@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE7B83522E9FD3FB004EFE34 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE7B83512E9FD3FB004EFE34 /* alarm.mp3 */; };
+		CED13D3D2EA7978100E5714E /* Example.png in Resources */ = {isa = PBXBuildFile; fileRef = CED13D3B2EA7978100E5714E /* Example.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		CE7B83262E9F7630004EFE34 /* Pomodoro Timer EstTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pomodoro Timer EstTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7B83302E9F7630004EFE34 /* Pomodoro Timer EstUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pomodoro Timer EstUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7B83512E9FD3FB004EFE34 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
+		CED13D3B2EA7978100E5714E /* Example.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Example.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,6 +87,7 @@
 				CE7B83332E9F7630004EFE34 /* Pomodoro Timer EstUITests */,
 				CE7B831A2E9F762E004EFE34 /* Products */,
 				CE7B83512E9FD3FB004EFE34 /* alarm.mp3 */,
+				CED13D3B2EA7978100E5714E /* Example.png */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,6 +221,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED13D3D2EA7978100E5714E /* Example.png in Resources */,
 				CE7B83522E9FD3FB004EFE34 /* alarm.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -3,6 +3,8 @@
 A minimal, gradient-themed Pomodoro timer built with SwiftUI.  
 Includes customizable focus duration, ambient alarm sound, and clean glass-like buttons.
 
+![My app screenshot](./assets/Example.png)
+
 ## Features
 - Adjustable focus time (+/- 1 or 5 minutes)
 - Simple, clean SwiftUI layout
