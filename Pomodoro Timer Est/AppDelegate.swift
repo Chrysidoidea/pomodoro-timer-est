@@ -34,8 +34,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if popover.isShown {
                 popover.performClose(sender)
             } else {
-                popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-                popover.contentViewController?.view.window?.makeKey()
+                popover.show(
+                    relativeTo: button.bounds,
+                    of: button,
+                    preferredEdge: .minY
+                )
+
+                if let window = popover.contentViewController?.view.window {
+                    window.makeKey()
+                    window.level = .floating
+                    NSApp.activate(ignoringOtherApps: true)
+                }
             }
         }
     }

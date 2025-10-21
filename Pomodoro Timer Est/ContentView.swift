@@ -33,10 +33,11 @@ struct ContentView: View {
             )
             .ignoresSafeArea()
             .frame(minWidth: 280, minHeight: 380)
+            
 
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
-                    .font(.title)
+                    .font(.largeTitle)
                     .foregroundStyle(
                         LinearGradient(
                             colors: [
@@ -53,7 +54,7 @@ struct ContentView: View {
                     )
 
                 Text(formatTime(timeRemaining))
-                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                    .font(.system(size: 62, weight: .bold, design: .monospaced))
                     .monospacedDigit()
                     .padding(.horizontal, 13)
                     .foregroundStyle(
@@ -71,6 +72,7 @@ struct ContentView: View {
                     )
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
+                    .animation(.easeInOut(duration: 0.4), value: timeRemaining)
                 HStack(spacing: 20) {
                     Button("Reset Defaults") {
                         isTimerRunning = false
