@@ -5,7 +5,6 @@
 //  Created by Arthur Korolev on 10/15/25.
 //
 
-import AVFoundation
 import SwiftUI
 
 @MainActor
@@ -20,6 +19,16 @@ struct ContentView: View {
     @AppStorage("focusDuration") private var focusDuration: Int = 1500
     @AppStorage("restDuration") private var restDuration: Int = 300
     @AppStorage("timeRemaining") private var timeRemaining: Int = 1500
+    
+    func resetDefaults() {
+        isTimerRunning = false
+        timer?.invalidate()
+        timer = nil
+        mode = .focus
+        timeRemaining = 1500
+        focusDuration = 1500
+        restDuration = 300
+    }
 
     var body: some View {
         ZStack {
@@ -33,7 +42,7 @@ struct ContentView: View {
             )
             .ignoresSafeArea()
             .frame(minWidth: 280, minHeight: 380)
-            
+ 
 
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
@@ -51,6 +60,7 @@ struct ContentView: View {
                             startPoint: .leading,
                             endPoint: .trailing
                         )
+
                     )
 
                 Text(formatTime(timeRemaining))
@@ -74,58 +84,10 @@ struct ContentView: View {
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
                     .animation(.easeInOut(duration: 0.4), value: timeRemaining)
                 HStack(spacing: 20) {
-                    Button("Reset Defaults") {
-                        isTimerRunning = false
-                        timer?.invalidate()
-                        timer = nil
-                        mode = .focus
-                        timeRemaining = 1500
-                        focusDuration = 1500
-                        restDuration = 300
-                    }
-                    .disabled(isTimerRunning)
-                    .buttonStyle(.glass)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [
-                                Color(
-                                    red: 255.0 / 255.0,
-                                    green: 63.0 / 255.0,
-                                    blue: 127.0 / 255.0
-                                ), .blue,
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
+                    ResetButton(
+                        isDisabled: isTimerRunning, onTap: resetDefaults, title: "reset defaults"
                     )
-                    .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                    .animation(
-                        .spring(response: 0.4, dampingFraction: 0.5),
-                        value: isTimerRunning
-                    )
-
-                    Button(isTimerRunning ? "Pause" : "Begin") {
-                        if isTimerRunning {
-                            pauseTimer()
-                        } else {
-                            startTimer()
-                        }
-                    }
-                    .buttonStyle(.glass)
-                    .scaleEffect(isTimerRunning ? 1.15 : 1.0)
-                    .animation(
-                        .spring(response: 0.4, dampingFraction: 0.5),
-                        value: isTimerRunning
-                    )
-                    .shadow(radius: isTimerRunning ? 10 : 3)
-                    .foregroundStyle(
-                        LinearGradient(
-                                colors: [.green, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                    )
-                    .padding(5)
+                    ConditionalButton(isDisabled: isTimerRunning, start: startTimer, pause: pauseTimer)
                 }
                 VStack(spacing: 6) {
                     Text("Focus Time: \(focusDuration / 60) min")
@@ -259,23 +221,7 @@ struct ContentView: View {
         timer = nil
     }
 }
-var player: AVAudioPlayer?
 
-func playSound() {
-    guard let path = Bundle.main.path(forResource: "alarm", ofType: "mp3")
-    else {
-        return
-    }
-    let url = URL(fileURLWithPath: path)
-
-    do {
-        player = try AVAudioPlayer(contentsOf: url)
-        player?.play()
-
-    } catch let error {
-        print(error.localizedDescription)
-    }
-}
 
 func formatTime(_ seconds: Int) -> String {
     let minutes = seconds / 60
@@ -285,3 +231,4 @@ func formatTime(_ seconds: Int) -> String {
 #Preview {
     ContentView()
 }
+
