@@ -32,17 +32,11 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 55 / 255, green: 0 / 255, blue: 110 / 255),
-                    Color(red: 85 / 255, green: 0 / 255, blue: 155 / 255),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            .frame(minWidth: 280, minHeight: 380)
- 
+            Rectangle()
+            Image("Background")
+                .resizable()
+                .ignoresSafeArea()
+                .frame(minWidth: 280, minHeight: 380)
 
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
@@ -51,9 +45,9 @@ struct ContentView: View {
                         LinearGradient(
                             colors: [
                                 Color(
-                                    red: 255.0 / 255.0,
-                                    green: 63.0 / 255.0,
-                                    blue: 127.0 / 255.0
+                                    red: 235.0 / 255.0,
+                                    green: 23.0 / 255.0,
+                                    blue: 97.0 / 255.0
                                 ),
                                 .blue,
                             ],
@@ -90,95 +84,27 @@ struct ContentView: View {
                     ConditionalButton(isDisabled: isTimerRunning, start: startTimer, pause: pauseTimer)
                 }
                 VStack(spacing: 6) {
-                    Text("Focus Time: \(focusDuration / 60) min")
-                        .font(.headline)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [
-                                    Color(
-                                        red: 255.0 / 255.0,
-                                        green: 63.0 / 255.0,
-                                        blue: 127.0 / 255.0
-                                    ), .blue,
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                    Headers(title: "Focus time", restDuration: restDuration)
                     HStack(spacing: 8) {
-                    ForEach([-5, -1, +1, +5], id: \.self) { step in
-                        Button("\(step)") {
-                            focusDuration += step * 60
-                            if mode == .focus {
-                                timeRemaining += step * 60
-                            }
-                        }
-                        .disabled(isTimerRunning)
-                        .buttonStyle(.glass)
-                        .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                        .animation(
-                            .spring(response: 0.4, dampingFraction: 0.5),
-                            value: isTimerRunning
-                        )
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [
-                                    Color(
-                                        red: 255.0 / 255.0,
-                                        green: 63.0 / 255.0,
-                                        blue: 127.0 / 255.0
-                                    ), .blue,
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        ForEach([-5, -1, +1, +5], id: \.self) { step in
+                            stepButton(step: step, isDisabled: isTimerRunning) { stepValue in
+                                   focusDuration += stepValue * 60
+                                   if mode == .focus {
+                                       timeRemaining += stepValue * 60
+                                   }
+                               }
+                           }
                     }}
-                }
                 VStack(spacing: 6) {
-                    Text("Rest Time: \(restDuration / 60) min")
-                        .font(.headline)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [
-                                    Color(
-                                        red: 255.0 / 255.0,
-                                        green: 63.0 / 255.0,
-                                        blue: 127.0 / 255.0
-                                    ), .blue,
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                    Headers(title: "Rest time", restDuration: restDuration)
                     HStack(spacing: 8) {
                         ForEach([-5, -1, 1, 5], id: \.self) { step in
-                            Button("\(step)") {
-                                restDuration += step * 60
-                                if mode == .rest {
-                                    timeRemaining += step * 60
-                                }
-                            }
-                            .disabled(isTimerRunning)
-                            .buttonStyle(.glass)
-                            .scaleEffect(!isTimerRunning ? 1.05 : 1.0)
-                            .animation(
-                                .spring(response: 0.4, dampingFraction: 0.5),
-                                value: isTimerRunning
-                            )
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [
-                                        Color(
-                                            red: 255.0 / 255.0,
-                                            green: 63.0 / 255.0,
-                                            blue: 127.0 / 255.0
-                                        ), .blue,
-                                    ],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                            stepButton(step: step, isDisabled: isTimerRunning) { stepValue in
+                                   restDuration += stepValue * 60
+                                   if mode == .rest {
+                                       timeRemaining += stepValue * 60
+                                   }
+                               }
                         }
                     }
                 }

@@ -76,6 +76,36 @@ struct ConditionalButton : View {
     }
 }
 
+struct stepButton: View {
+    let step: Int
+        let isDisabled: Bool
+        let action: (Int) -> Void
+
+        var body: some View {
+            Button("\(step > 0 ? "+\(step)" : "\(step)")") {
+                action(step)
+            }
+            .frame(width: 25, height: 25)
+            .glassEffect(.clear.interactive())
+            .disabled(isDisabled)
+            .buttonStyle(.plain)
+            .scaleEffect(!isDisabled ? 1.05 : 1.0)
+            .animation(
+                .spring(response: 0.4, dampingFraction: 0.5),
+                value: isDisabled
+            )
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        Color(red: 205/255, green: 63/255, blue: 127/255),
+                        .blue
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+        }
+}
 
 #Preview {
     ContentView()
