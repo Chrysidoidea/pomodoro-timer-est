@@ -14,15 +14,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 280, height: 300)
-        popover.behavior = NSPopover.Behavior.transient
+        popover.contentSize = NSSize(width: 320, height: 400)
+        popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: ContentView())
         
         
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
             let config = NSImage.SymbolConfiguration(textStyle: .body)
-            button.image = NSImage(systemSymbolName: "timer", accessibilityDescription: "Pomodoro Timer")?.withSymbolConfiguration(config)
+            button.image = NSImage(systemSymbolName: "atom", accessibilityDescription: "Pomodoro Timer")?
+                .withSymbolConfiguration(config)
+            button.image?.isTemplate = true
             button.action = #selector(togglePopover(_:))
             button.target = self
             

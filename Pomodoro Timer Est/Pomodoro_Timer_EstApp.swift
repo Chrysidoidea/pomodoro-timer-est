@@ -11,8 +11,7 @@ import SwiftUI
 struct Pomodoro_Timer_EstApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Settings {
         }
     }
 }

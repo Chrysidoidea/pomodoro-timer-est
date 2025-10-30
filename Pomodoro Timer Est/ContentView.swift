@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @MainActor
 struct ContentView: View {
     private enum Mode: Equatable {
@@ -19,6 +20,7 @@ struct ContentView: View {
     @AppStorage("focusDuration") private var focusDuration: Int = 1500
     @AppStorage("restDuration") private var restDuration: Int = 300
     @AppStorage("timeRemaining") private var timeRemaining: Int = 1500
+    
     
     func resetDefaults() {
         isTimerRunning = false
@@ -33,10 +35,11 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Rectangle()
-            Image("Background")
-                .resizable()
-                .ignoresSafeArea()
-                .frame(minWidth: 280, minHeight: 380)
+                .fill(.ultraThinMaterial)
+                .opacity(0.01)
+                .padding(50)
+                .blur(radius: 20)
+            .ignoresSafeArea()
 
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
@@ -108,7 +111,12 @@ struct ContentView: View {
                         }
                     }
                 }
-
+                Button("Quit") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .padding(.top, 10)
+                .font(.caption)
+                .foregroundColor(.red)
             }
         }
     }
@@ -155,6 +163,6 @@ func formatTime(_ seconds: Int) -> String {
     return String(format: "%02d:%02d", minutes, seconds)
 }
 #Preview {
-    ContentView()
+    EmptyView()
 }
 
