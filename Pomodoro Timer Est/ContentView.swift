@@ -31,7 +31,7 @@ struct ContentView: View {
         focusDuration = 1500
         restDuration = 300
     }
-
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -39,8 +39,8 @@ struct ContentView: View {
                 .opacity(0.01)
                 .padding(50)
                 .blur(radius: 20)
-            .ignoresSafeArea()
-
+                .ignoresSafeArea()
+            
             VStack(spacing: 14) {
                 Text("Pomodoro Timer Est")
                     .font(.largeTitle)
@@ -57,25 +57,25 @@ struct ContentView: View {
                             startPoint: .leading,
                             endPoint: .trailing
                         )
-
+                        
                     )
-
+                
                 Text(formatTime(timeRemaining))
                     .font(.system(size: 62, weight: .bold, design: .monospaced))
                     .monospacedDigit()
                     .padding(.horizontal, 13)
                     .foregroundStyle(
                         mode == .focus
-                            ? LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                            : LinearGradient(
-                                colors: [.green, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+                        ? LinearGradient(
+                            colors: [.blue, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        : LinearGradient(
+                            colors: [.green, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
                     .scaleEffect(isTimerRunning ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.4), value: isTimerRunning)
@@ -87,33 +87,34 @@ struct ContentView: View {
                     ConditionalButton(isDisabled: isTimerRunning, start: startTimer, pause: pauseTimer)
                 }
                 VStack(spacing: 6) {
-                    Headers(title: "Focus time", restDuration: restDuration)
+                    Headers(title: "Focus time", restDuration: focusDuration)
                     HStack(spacing: 8) {
                         ForEach([-5, -1, +1, +5], id: \.self) { step in
                             stepButton(step: step, isDisabled: isTimerRunning) { stepValue in
-                                   focusDuration += stepValue * 60
-                                   if mode == .focus {
-                                       timeRemaining += stepValue * 60
-                                   }
-                               }
-                           }
+                                focusDuration += stepValue * 60
+                                if mode == .focus {
+                                    timeRemaining += stepValue * 60
+                                }
+                            }
+                        }
                     }}
                 VStack(spacing: 6) {
                     Headers(title: "Rest time", restDuration: restDuration)
                     HStack(spacing: 8) {
                         ForEach([-5, -1, 1, 5], id: \.self) { step in
                             stepButton(step: step, isDisabled: isTimerRunning) { stepValue in
-                                   restDuration += stepValue * 60
-                                   if mode == .rest {
-                                       timeRemaining += stepValue * 60
-                                   }
-                               }
+                                restDuration += stepValue * 60
+                                if mode == .rest {
+                                    timeRemaining += stepValue * 60
+                                }
+                            }
                         }
                     }
                 }
                 Button("Quit") {
                     NSApplication.shared.terminate(nil)
                 }
+                .disabled(isTimerRunning)
                 .padding(.top, 10)
                 .font(.caption)
                 .foregroundColor(.red)
@@ -123,9 +124,9 @@ struct ContentView: View {
     private func startTimer() {
         guard !isTimerRunning else { return }
         isTimerRunning = true
-
+        
         timer?.invalidate()
-
+        
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
             _ in
             Task { @MainActor in
@@ -146,7 +147,7 @@ struct ContentView: View {
                 }
             }
         }
-
+        
         RunLoop.current.add(timer!, forMode: .common)
     }
     private func pauseTimer() {
